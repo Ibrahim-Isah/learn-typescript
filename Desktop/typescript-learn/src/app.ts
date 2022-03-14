@@ -1,3 +1,7 @@
+import { Invoice } from "./classes/Invoice.js";
+import { Payment } from "./classes/Payment.js";
+import { HasFormatter } from "./interfaces/hasFormatter.js";
+
 const form = document.querySelector('.new-item-form') as HTMLFormElement;
 
 const type = document.querySelector('#type') as HTMLSelectElement;
@@ -5,33 +9,31 @@ const toFrom = document.querySelector('#tofrom') as HTMLInputElement
 const details = document.querySelector('#details') as HTMLInputElement
 const amount = document.querySelector('#amount') as HTMLInputElement
 
-class Invoice {
-    client: string;
-    details: string;
-    amount: number;
+let docOne: HasFormatter;
+let docTwo: HasFormatter;
 
-    constructor(c: string, d: string, a: number){
-        this.client = c;
-        this.details = d;
-        this.amount = a;
-    }
+let docs: HasFormatter[] = [];
 
-    format(){
-        return `${this.client} owes N${this.details} ${this.amount}`
-    }
-}
+docOne = new Invoice('Isah' , 'doings things' , 400);
+docTwo = new Payment('Maimuna' , 'doings things website' , 200);
 
-const invOne = new Invoice('Isah' , 'doings things' , 400);
 
-console.log(invOne)
+docs.push(docOne)
+docs.push(docTwo)
+
+console.log('this the docs' , docs)
 
 form.addEventListener('submit' , (e: Event) => {
     e.preventDefault();
 
+    let doc: HasFormatter;
+
+    if(type.value === 'invoice'){
+         doc =new Invoice(toFrom.value, details.value, amount.valueAsNumber)
+    } else {
+         doc =new Payment(toFrom.value, details.value, amount.valueAsNumber)
+    }
     console.log(
-        type.value,
-        toFrom.value,
-        details.value,
-        amount.valueAsNumber
+        doc
     )
 })
